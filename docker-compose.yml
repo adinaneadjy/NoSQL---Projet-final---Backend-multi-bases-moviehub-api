@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: moviehub-api-app
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - mongo
+      - redis
+    command: npm run dev
+
+  postgres:
+    image: postgres:15
+    container_name: moviehub-postgres
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: moviehub
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  mongo:
+    image: mongo:4.4.29
+    container_name: moviehub-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+
+  redis:
+    image: redis:7
+    container_name: moviehub-redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:
+  mongodata:
