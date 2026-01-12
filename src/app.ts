@@ -1,3 +1,4 @@
+// Nettoyage du backend effectué le 12 janvier 2026
 import dotenv from "dotenv";
 dotenv.config();
 
