@@ -4,9 +4,7 @@ import { MovieDetails } from "../models/movieDetails";
 import { redis } from "../db/redisClient";
 import { getRecommendationsByMetadata } from "../services/recommendationService";
 
-/**
- * GET /movies
- */
+
 export const getMovies = async (req: Request, res: Response) => {
   try {
     const movies = await prisma.movie.findMany({ take: 100 });
@@ -16,9 +14,7 @@ export const getMovies = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * GET /movies/popular
- */
+
 export const getPopularMovies = async (req: Request, res: Response) => {
   try {
     const z = await redis.zrevrange("movies:views", 0, 9, "WITHSCORES");
@@ -42,9 +38,7 @@ export const getPopularMovies = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * GET /movies/:id
- */
+
 export const getMovieById = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
@@ -73,9 +67,7 @@ export const getMovieById = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * POST /movies
- */
+
 export const createMovie = async (req: Request, res: Response) => {
   try {
     const { title, overview, release } = req.body;
@@ -94,9 +86,7 @@ export const createMovie = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * POST /movies/:id/details
- */
+
 export const createMovieDetails = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
@@ -113,9 +103,7 @@ export const createMovieDetails = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * GET /movies/:id/recommendations
- */
+
 export const getMovieRecommendations = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
@@ -132,19 +120,17 @@ export const getMovieRecommendations = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * PUT /movies/:id/recommend
- */
+
 export const recommendMovie = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
 
-    // Enlever la recommandation de tous les films
+    
     await prisma.movie.updateMany({
       data: { isRecommended: false }
     });
 
-    // Mettre la recommandation sur le film choisi
+    
     const updated = await prisma.movie.update({
       where: { id },
       data: { isRecommended: true }

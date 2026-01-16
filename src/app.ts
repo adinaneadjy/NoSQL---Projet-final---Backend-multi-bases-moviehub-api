@@ -1,4 +1,3 @@
-// Nettoyage du backend effectué le 12 janvier 2026
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -9,7 +8,6 @@ import moviesRouter from "./routes/movies";
 
 const app = express();
 
-// CORS pour autoriser ton frontend React
 app.use(cors({
   origin: "http://localhost:5173"
 }));

@@ -1,7 +1,7 @@
 import { prisma } from "../src/db/prismaClient";
 
 async function main() {
-  // Seed some sample movies
+  
   await prisma.movie.create({
     data: {
       title: "Inception",
