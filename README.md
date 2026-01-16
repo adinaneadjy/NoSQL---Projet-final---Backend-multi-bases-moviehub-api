@@ -1,4 +1,4 @@
-# 🎬 MovieHub API – Projet Final NoSQL
+# MovieHub API – Projet Final NoSQL
 
 API backend conçue pour gérer une base de films, enrichir les données avec des métadonnées avancées, proposer des recommandations et optimiser les performances via un système de cache.  
 Ce projet illustre une architecture **polyglotte** combinant PostgreSQL, MongoDB et Redis.
@@ -72,7 +72,7 @@ Les services suivants seront lancés :
 
 ---
 
-## 📸 Captures d’écran
+## Captures d’écran
 
 Les captures sont disponibles dans le dossier `src/` :
 
