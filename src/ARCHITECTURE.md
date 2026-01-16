@@ -108,18 +108,6 @@ Redis est utilisé comme :
 
 Exemples :
 
-```
-movie:views:1 -> 12
-movie:views:2 -> 8
-```
-
-Ou via Sorted Set :
-
-```
-ZADD popular_movies 12 "1"
-ZADD popular_movies 8 "2"
-```
-
 ![alt text](image-3.png)
 
 ### 5.2 Justification du choix Redis
@@ -154,4 +142,5 @@ MovieHub API démontre une architecture moderne et efficace :
 - Redis → performance et popularité  
 
 Cette combinaison permet une API performante, évolutive et adaptée à des besoins variés.
+
 
