@@ -5,7 +5,8 @@ import {
   createMovie,
   createMovieDetails,
   getMovieRecommendations,
-  getPopularMovies
+  getPopularMovies,
+  recommendMovie
 } from "../controllers/moviesController";
 
 const router = Router();
@@ -16,5 +17,6 @@ router.get("/:id", getMovieById);
 router.post("/", createMovie);
 router.post("/:id/details", createMovieDetails);
 router.get("/:id/recommendations", getMovieRecommendations);
+router.put("/:id/recommend", recommendMovie); // ⭐ route ajoutée
 
 export default router;

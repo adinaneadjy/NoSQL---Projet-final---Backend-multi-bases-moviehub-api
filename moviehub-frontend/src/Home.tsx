@@ -7,6 +7,7 @@ interface Movie {
   title: string;
   overview?: string;
   release?: string;
+  isRecommended?: boolean;
 }
 
 export default function Home() {
@@ -26,7 +27,6 @@ export default function Home() {
       setMovies(res.data);
       setError("");
     } catch {
-      setError("❌ Impossible de récupérer les films");
     } finally {
       setLoading(false);
     }
@@ -36,7 +36,7 @@ export default function Home() {
     fetchMovies();
   }, []);
 
-  // Soumission du formulaire
+  // Ajouter un film
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -45,18 +45,44 @@ export default function Home() {
         overview,
         release,
       });
+
       setTitle("");
       setOverview("");
       setRelease("");
-      fetchMovies(); // rafraîchir la liste
+
+      fetchMovies();
     } catch {
-      setError("❌ Impossible de créer le film");
+      setError(" Impossible de créer le film");
     }
   };
+
+  // Recommander un film
+  const handleRecommend = async (id: number) => {
+    try {
+      await axios.put(`${import.meta.env.VITE_API_URL}/movies/${id}/recommend`);
+      fetchMovies();
+    } catch {
+      setError(" Impossible de définir la recommandation");
+    }
+  };
+
+  const recommended = movies.find((m) => m.isRecommended);
 
   return (
     <div className="p-6 font-sans">
       <h1 className="text-4xl font-bold text-blue-600 mb-6">🎬 MovieHub — Films</h1>
+
+      {/* Film recommandé */}
+      {recommended && (
+        <div className="bg-yellow-100 p-4 rounded shadow mb-8">
+          <h2 className="text-xl font-bold">🎯 Film recommandé</h2>
+          <p className="text-lg">{recommended.title}</p>
+          <p>{recommended.overview}</p>
+          <p className="text-sm text-gray-600">
+            Sortie : {new Date(recommended.release!).toLocaleDateString()}
+          </p>
+        </div>
+      )}
 
       {/* Formulaire */}
       <form
@@ -117,18 +143,33 @@ export default function Home() {
             className="bg-white shadow rounded p-4 hover:shadow-lg transition"
           >
             <h3 className="text-lg font-semibold text-blue-600">{movie.title}</h3>
+
             {movie.release && (
               <p className="text-sm text-gray-500">
-                📅 Sortie : {new Date(movie.release).toLocaleDateString()}
+                Sortie : {new Date(movie.release).toLocaleDateString()}
               </p>
             )}
+
             <p className="text-gray-700 mt-2">{movie.overview}</p>
+
             <Link
               to={`/movies/${movie.id}`}
               className="inline-block mt-4 text-blue-600 underline hover:text-blue-800"
             >
               Voir détails →
             </Link>
+
+            {/* Bouton recommander */}
+            <button
+              onClick={() => handleRecommend(movie.id)}
+              className={`mt-3 px-3 py-1 rounded ${
+                movie.isRecommended
+                  ? "bg-green-600 text-white"
+                  : "bg-gray-200 hover:bg-gray-300"
+              }`}
+            >
+               {movie.isRecommended ? "Recommandé" : "Recommander"}
+            </button>
           </li>
         ))}
       </ul>
@@ -138,7 +179,7 @@ export default function Home() {
           to="/popular"
           className="text-blue-600 underline hover:text-blue-800"
         >
-          🔥 Voir les films populaires
+           Voir les films populaires
         </Link>
       </div>
     </div>

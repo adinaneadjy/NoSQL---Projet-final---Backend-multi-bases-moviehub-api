@@ -120,7 +120,6 @@ export const getMovieRecommendations = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
 
-    // ✅ 1 seul argument → TS OK
     const results = await getRecommendationsByMetadata(id);
 
     res.json({
@@ -130,5 +129,30 @@ export const getMovieRecommendations = async (req: Request, res: Response) => {
     });
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch recommendations" });
+  }
+};
+
+/**
+ * PUT /movies/:id/recommend
+ */
+export const recommendMovie = async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+
+    // Enlever la recommandation de tous les films
+    await prisma.movie.updateMany({
+      data: { isRecommended: false }
+    });
+
+    // Mettre la recommandation sur le film choisi
+    const updated = await prisma.movie.update({
+      where: { id },
+      data: { isRecommended: true }
+    });
+
+    res.json(updated);
+  } catch (err) {
+    console.error("Erreur recommandation :", err);
+    res.status(500).json({ error: "Impossible de définir la recommandation" });
   }
 };

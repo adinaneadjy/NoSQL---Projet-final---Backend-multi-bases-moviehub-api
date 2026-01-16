@@ -3,6 +3,7 @@ dotenv.config();
 
 import app from "./app";
 import { connectMongo } from "./db/mongoClient";
+import "./db/redisClient"; 
 
 const PORT = process.env.PORT || 3000;
 
