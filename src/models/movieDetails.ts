@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const movieDetailsSchema = new mongoose.Schema(
   {
     movieId: { type: Number, unique: true, index: true },
+    isRecommended: { type: Boolean, default: false },
 
     cast: { type: [String], default: [] },
     directors: { type: [String], default: [] },

@@ -17,18 +17,6 @@ model User {
   createdAt DateTime       @default(now())
 }
 
-model Movie {
-  id         Int           @id @default(autoincrement())
-  title      String
-  overview   String?
-  release    DateTime?
-  createdAt  DateTime      @default(now())
-
-  history    WatchHistory[]
-  ratings    Rating[]
-  view       MovieView?
-}
-
 model WatchHistory {
   id        Int      @id @default(autoincrement())
   userId    Int
@@ -54,4 +42,16 @@ model MovieView {
   movieId Int  @id
   views   Int  @default(0)
   movie   Movie @relation(fields: [movieId], references: [id])
+}
+model Movie {
+  id            Int           @id @default(autoincrement())
+  title         String
+  overview      String?
+  release       DateTime?
+  createdAt     DateTime      @default(now())
+  isRecommended Boolean       @default(false) //  AJOUT OBLIGATOIRE
+
+  history       WatchHistory[]
+  ratings       Rating[]
+  view          MovieView?
 }
